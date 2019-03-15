@@ -12,9 +12,5 @@
 /.vs
 
 
-# files
-/ElGamal.API/ElGamal.API.csproj
-/ElGamal.API/ElGamal.API.csproj.user
-/ElGamal.BL/ElGamal.BL.csproj
-/ElGamal.DAL/ElGamal.DAL.csproj
+
 
