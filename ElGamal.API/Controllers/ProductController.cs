@@ -27,7 +27,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
-                return null;
+                return null; 
             }
         }
 
