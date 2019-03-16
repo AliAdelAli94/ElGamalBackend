@@ -13,6 +13,9 @@ namespace ElGamal.BL.Interfaces
 
         List<CategoryDTO> GetAllCategories();
 
+        List<ParentCategoryDto> GetParentCategories();
+
+
 
     }
 }

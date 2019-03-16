@@ -54,6 +54,30 @@ namespace ElGamal.BL.Classes
                 return null;
             }
         }
+
+        public List<ParentCategoryDto> GetParentCategories()
+        {
+            try
+            {
+                return this.iUnitOfWork.CategoryRepository.Get().Select(x => new ParentCategoryDto()
+                {
+                    ID = x.ID,
+                    name = x.name,
+                    parentCategoryID = x.parentCategoryID,
+                    childCategories = x.Categories1.Select(z => new CategoryDTO()
+                    {
+                        ID = z.ID,
+                        name = z.name,
+                        parentCategoryID = z.parentCategoryID
+                    }).ToList()
+                }).Where(x => x.parentCategoryID == null).ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw;
+            }
+        }
     }
 
 

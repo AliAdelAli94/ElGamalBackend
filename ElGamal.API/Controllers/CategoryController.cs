@@ -32,6 +32,21 @@ namespace ElGamal.API.Controllers
         }
 
 
+        [HttpGet]
+        [Route("Category/GetParentCategories/")]
+        public IHttpActionResult GetParentCategories()
+        {
+            try
+            {
+                return Ok(this.iCategoryBL.GetParentCategories());
+            }
+            catch (Exception exp)
+            {
+                return null;
+            }
+        }
+
+
         [HttpPost]
         [Route("Category/AddCategory/")]
         public IHttpActionResult AddCategory(CategoryDTO category)
