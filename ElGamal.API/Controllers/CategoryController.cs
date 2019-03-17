@@ -17,6 +17,7 @@ namespace ElGamal.API.Controllers
             this.iCategoryBL = iCB;
         }
 
+
         [HttpGet]
         [Route("Category/GetAllCategories/")]
         public IHttpActionResult GetAllCategories()
