@@ -46,5 +46,54 @@ namespace ElGamal.API.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("Product/GetAllProducts/")]
+        public IHttpActionResult GetAllProducts()
+        {
+            try
+            {
+                return Ok(this.iProductBL.GetAllProducts());
+            }
+            catch (Exception exp)
+            {
+                return null;
+            }
+
+        }
+
+
+        [HttpGet]
+        [Route("Product/GetAllOffers/")]
+        public IHttpActionResult GetAllOffers()
+        {
+            try
+            {
+                return Ok(this.iProductBL.GetAllOffers());
+            }
+            catch (Exception exp)
+            {
+                return null;
+            }
+
+        }
+
+
+        [HttpPost]
+        [Route("Product/EditProduct")]
+        public IHttpActionResult EditProduct(ProductDTO item)
+        {
+            try
+            {
+                return Ok(this.iProductBL.EditProduct(item));
+            }
+            catch (Exception exp)
+            {
+                return null;
+            }
+        }
+
+
+
     }
 }

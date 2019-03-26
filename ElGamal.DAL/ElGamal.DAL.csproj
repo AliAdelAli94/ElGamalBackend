@@ -50,9 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\CategoryDTO.cs" />
+    <Compile Include="DTOs\CommentDTO.cs" />
     <Compile Include="DTOs\ImageDTO.cs" />
     <Compile Include="DTOs\ParentCategoryDto.cs" />
     <Compile Include="DTOs\ProductDTO.cs" />
+    <Compile Include="DTOs\ProductOfferDTO.cs" />
     <Compile Include="DTOs\ProductOptionDTO.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Comment.cs" />

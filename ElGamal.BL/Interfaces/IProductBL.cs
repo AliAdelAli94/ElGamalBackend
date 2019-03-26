@@ -10,7 +10,14 @@ namespace ElGamal.BL.Interfaces
     public interface IProductBL
     {
         int CheckIfProductExits(string name);
+
         int AddProduct(ProductDTO item);
+        
+        List<ProductDTO> GetAllProducts();
+
+        int EditProduct(ProductDTO item);
+
+        List<ProductOfferDTO> GetAllOffers();
 
 
     }

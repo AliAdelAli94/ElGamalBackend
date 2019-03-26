@@ -48,17 +48,27 @@ namespace ElGamal.API.Controllers
                     uploadedFileInfo.MoveTo(targetFile);
                     filesUrls.Add("/images/" + folderName + '/' + newName);
                 }
-                
 
-                //if (oldProp != null)
-                //{
-                //    var url = new Uri(oldProp);
-                //    oldProp = '~' + url.LocalPath;
-                //    oldProp = HttpContext.Current.Server.MapPath(oldProp);
-                //    if (File.Exists(oldProp))
-                //        File.Delete(oldProp);
-                //}
-                
+
+                if (HttpContext.Current.Request.Form["EditMode"] == "true")
+                {
+                    List<string> imagesUrls = new List<string>();
+                    imagesUrls = (HttpContext.Current.Request.Form["oldImagesUrls"] != null) ? HttpContext.Current.Request.Form["oldImagesUrls"].Split(';').ToList() : null;
+                    if(imagesUrls != null)
+                    {
+                        string urlTemp = string.Empty;
+                        foreach (var item in imagesUrls)
+                        {
+                            var url = new Uri(item);
+                            oldProp = '~' + url.LocalPath;
+                            oldProp = HttpContext.Current.Server.MapPath(oldProp);
+                            if (File.Exists(oldProp))
+                                File.Delete(oldProp);
+                        }
+                    }
+                    
+                }
+
                 var response = Request.CreateResponse(HttpStatusCode.OK, filesUrls);
 
                 return response;

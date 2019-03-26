@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ElGamal.DAL.DTOs
 {
-    public class ProductDTO
+    public class ProductOfferDTO
     {
         public Guid ID { get; set; }
 
@@ -25,10 +25,6 @@ namespace ElGamal.DAL.DTOs
         public string parentCategoryName { get; set; }
 
         public List<ImageDTO> images { get; set; }
-
-        public List<ProductOptionDTO> ProductOptions { get; set; }
-
-        public List<CommentDTO> Comments { get; set; }
 
     }
 }
