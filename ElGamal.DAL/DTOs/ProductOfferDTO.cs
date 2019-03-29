@@ -24,6 +24,8 @@ namespace ElGamal.DAL.DTOs
 
         public string parentCategoryName { get; set; }
 
+        public string discountPercentage { get; set; }
+
         public List<ImageDTO> images { get; set; }
 
     }

@@ -19,6 +19,9 @@ namespace ElGamal.BL.Interfaces
 
         List<ProductOfferDTO> GetAllOffers();
 
+        int deleteProduct(DeleteProductDTO data);
+
+
 
     }
 }

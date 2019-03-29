@@ -4,9 +4,11 @@ using ElGamal.DAL.Entities;
 using ElGamal.DAL.UOF;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Configuration;
 
 namespace ElGamal.BL.Classes
@@ -114,45 +116,49 @@ namespace ElGamal.BL.Classes
                 Product oldItem = this.iUnitOfWork.ProductRepository.GetByID(item.ID);
 
                 // start edit images
-                foreach (var val in item.images)
-                {
-                    if (val.ID == Guid.Empty)
-                    {
-                        this.iUnitOfWork.ImageRepository.Insert(new Image() { ID = Guid.NewGuid(), imageUrl = val.imageUrl, productID = oldItem.ID });
-                    }
-                }
-
                 foreach (var val in oldItem.Images.ToList())
                 {
 
-                    if (!(item.images.Contains(new ImageDTO() { ID = val.ID, imageUrl = val.imageUrl })))
+                    if (item.images.Where(h => h.ID == val.ID).Count() == 0)
                     {
                         this.iUnitOfWork.ImageRepository.Delete(val);
                     }
 
+                }
+
+                foreach (var val in item.images)
+                {
+                    if (oldItem.Images.Where(x => x.ID == val.ID).Count() == 0)
+                    {
+                        this.iUnitOfWork.ImageRepository.Insert(new Image() { ID = Guid.NewGuid(), imageUrl = val.imageUrl, productID = oldItem.ID });
+                    }
                 }
                 item.images.Clear();
 
                 // end edit images
 
                 // product options edit
-                foreach (var val in item.ProductOptions)
-                {
-                    if (val.ID == Guid.Empty)
-                    {
-                        this.iUnitOfWork.ProductOptionRepository.Insert(new ProductOption() { ID = Guid.NewGuid(), optionText = val.optionText, productID = oldItem.ID });
-                    }
-                }
 
+                var tempProductOption = new List<ProductOptionDTO>();
                 foreach (var val in oldItem.ProductOptions.ToList())
                 {
-                    if (!(item.ProductOptions.Where(x => x.ID == val.ID && x.optionText == val.optionText).Count() > 0))
+                    iUnitOfWork.ProductOptionRepository.DetachEntity(val);
+                    tempProductOption = item.ProductOptions.Where(x => x.ID == val.ID).ToList();
+                    if (tempProductOption.Count() == 0)
                     {
                         this.iUnitOfWork.ProductOptionRepository.Delete(val.ID);
                     }
                     else
                     {
-                        this.iUnitOfWork.ProductOptionRepository.Update(new ProductOption() { ID = val.ID, optionText = val.optionText, productID = val.productID });
+                        this.iUnitOfWork.ProductOptionRepository.Update(new ProductOption() { ID = tempProductOption.FirstOrDefault().ID, optionText = tempProductOption.FirstOrDefault().optionText, productID = val.productID });
+                    }
+                }
+
+                foreach (var val in item.ProductOptions)
+                {
+                    if (oldItem.ProductOptions.Where(x => x.ID == val.ID).Count() == 0)
+                    {
+                        this.iUnitOfWork.ProductOptionRepository.Insert(new ProductOption() { ID = Guid.NewGuid(), optionText = val.optionText, productID = oldItem.ID });
                     }
                 }
                 item.ProductOptions.Clear();
@@ -162,7 +168,7 @@ namespace ElGamal.BL.Classes
                 foreach (var val in oldItem.Comments.ToList())
                 {
 
-                    if (!(item.Comments.Contains(new CommentDTO() { ID = val.ID, commentText = val.commentText })))
+                    if (item.Comments.Where(x => x.ID == val.ID).Count() > 0)
                     {
                         this.iUnitOfWork.CommentRepository.Delete(val.ID);
                     }
@@ -194,7 +200,7 @@ namespace ElGamal.BL.Classes
             try
             {
 
-                List<ProductOfferDTO> offers = this.iUnitOfWork.ProductRepository.Get( y => y.priceBefore != null && y.priceAfter != null).Select(x => new ProductOfferDTO()
+                List<ProductOfferDTO> offers = this.iUnitOfWork.ProductRepository.Get(y => y.priceBefore != null && y.priceAfter != null).Select(x => new ProductOfferDTO()
                 {
                     ID = x.ID,
                     description = x.description,
@@ -203,7 +209,7 @@ namespace ElGamal.BL.Classes
                     name = x.name,
                     priceAfter = x.priceAfter,
                     priceBefore = x.priceBefore,
-
+                    discountPercentage = String.Format("{0:0.00}", (100 - ((x.priceAfter * 100) / x.priceBefore))) + " %" ,
                     rate = x.rate,
                     images = x.Images.Select(i => new ImageDTO()
                     {
@@ -222,5 +228,40 @@ namespace ElGamal.BL.Classes
                 return null;
             }
         }
+
+        public int deleteProduct(DeleteProductDTO data)
+        {
+            try
+            {
+                try
+                {
+                    List<string> imagesUrls = data.images;
+                    if (imagesUrls != null)
+                    {
+                        string oldProp = string.Empty;
+                        foreach (var item in imagesUrls)
+                        {
+                            var url = new Uri(item);
+                            oldProp = '~' + url.LocalPath;
+                            oldProp = HttpContext.Current.Server.MapPath(oldProp);
+                            if (File.Exists(oldProp))
+                                File.Delete(oldProp);
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+                this.iUnitOfWork.ProductRepository.Delete(data.productID);
+                this.iUnitOfWork.Save();
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
     }
 }

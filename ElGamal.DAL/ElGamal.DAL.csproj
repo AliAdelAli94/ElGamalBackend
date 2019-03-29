@@ -51,11 +51,14 @@
   <ItemGroup>
     <Compile Include="DTOs\CategoryDTO.cs" />
     <Compile Include="DTOs\CommentDTO.cs" />
+    <Compile Include="DTOs\DeleteProductDTO.cs" />
     <Compile Include="DTOs\ImageDTO.cs" />
+    <Compile Include="DTOs\LoginDTO.cs" />
     <Compile Include="DTOs\ParentCategoryDto.cs" />
     <Compile Include="DTOs\ProductDTO.cs" />
     <Compile Include="DTOs\ProductOfferDTO.cs" />
     <Compile Include="DTOs\ProductOptionDTO.cs" />
+    <Compile Include="DTOs\UserDTO.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Context\ElGamalContext.cs" />

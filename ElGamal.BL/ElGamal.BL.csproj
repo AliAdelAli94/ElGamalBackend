@@ -43,9 +43,12 @@
   <ItemGroup>
     <Compile Include="Classes\CategoryBL.cs" />
     <Compile Include="Classes\ProductBL.cs" />
+    <Compile Include="Classes\UserBl.cs" />
     <Compile Include="Interfaces\ICategoryBL.cs" />
     <Compile Include="Interfaces\IProductBL.cs" />
+    <Compile Include="Interfaces\IUserBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\PasswordEncruption.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ElGamal.DAL\ElGamal.DAL.csproj">

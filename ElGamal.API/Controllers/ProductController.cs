@@ -94,6 +94,20 @@ namespace ElGamal.API.Controllers
         }
 
 
+        [HttpPost]
+        [Route("Product/DeleteProduct")]
+        public IHttpActionResult deleteProduct(DeleteProductDTO item)
+        {
+            try
+            {
+                return Ok(this.iProductBL.deleteProduct(item));
+            }
+            catch (Exception exp)
+            {
+                return null;
+            }
+        }
+
 
     }
 }
