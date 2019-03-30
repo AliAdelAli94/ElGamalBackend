@@ -62,6 +62,21 @@ namespace ElGamal.API.Controllers
 
         }
 
+        [HttpGet]
+        [Route("Product/GetProductById/{item}")]
+        public IHttpActionResult GetProductById(Guid item)
+        {
+            try
+            {
+                return Ok(this.iProductBL.GetProductById(item));
+            }
+            catch (Exception exp)
+            {
+                return null;
+            }
+
+        }
+
 
         [HttpGet]
         [Route("Product/GetAllOffers/")]

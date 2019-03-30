@@ -263,5 +263,62 @@ namespace ElGamal.BL.Classes
             }
         }
 
+        public ProductDTO GetProductById(Guid productID)
+        {
+            try
+            {
+                Product currentProduct = this.iUnitOfWork.ProductRepository.GetByID(productID);
+                if(currentProduct != null)
+                {
+                    return new ProductDTO()
+                    {
+                        ID = currentProduct.ID,
+                        description = currentProduct.description,
+                        categoryID = currentProduct.categoryID,
+                        parentCategoryName = currentProduct.Category.name,
+                        name = currentProduct.name,
+                        priceAfter = currentProduct.priceAfter,
+                        priceBefore = currentProduct.priceBefore,
+                        ProductOptions = currentProduct.ProductOptions.Select(p => new ProductOptionDTO()
+                        {
+                            ID = p.ID,
+                            optionText = p.optionText,
+                            productID = currentProduct.ID
+
+                        }).ToList(),
+                        rate = currentProduct.rate,
+                        images = currentProduct.Images.Select(i => new ImageDTO()
+                        {
+                            ID = i.ID,
+                            imageUrl = WebConfigurationManager.AppSettings["WebApiUrl"].ToString() + i.imageUrl,
+                            productID = currentProduct.ID
+
+                        }).ToList(),
+
+                        Comments = currentProduct.Comments.Select(c => new CommentDTO()
+                        {
+                            ID = c.ID,
+                            commentText = c.commentText,
+                            ratingValue = c.ratingValue,
+                            userID = c.userID,
+                            userName = c.User.userName,
+                            productID = currentProduct.ID
+                        }).ToList()
+                    };
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+
+
+
     }
 }

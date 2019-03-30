@@ -21,44 +21,36 @@ namespace ElGamal.BL.Classes
             this.iUnitOfWork = iUOF;
             this.passwordEncruption = new PasswordEncruption();
         }
-        //public bool RegisterUser(string useName, string email, string password)
-        //{
-        //    try
-        //    {
-        //        user item = new user();
-        //        password = passwordEncruption.Encrypt(password);
-
-        //        item.id = Guid.NewGuid();
-        //        item.username = useName;
-        //        item.email = email;
-        //        item.password = password;
-
-        //        this.iUnitOfWork.UserRepository.Insert(item);
-        //        this.iUnitOfWork.Save();
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        //public bool CheckUserExist(string email)
-        //{
-        //    try
-        //    {
-        //        user item = this.iUnitOfWork.UserRepository.Get(u => u.email == email).FirstOrDefault();
-        //        if (item == null)
-        //        {
-        //            return false;
-        //        }
-        //        return true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return false;
-        //    }
-        //}
+        public int RegisterUser(RegisterDTO item)
+        {
+            try
+            {
+                if(this.iUnitOfWork.UserRepository.Get(x => x.email == item.email).Count() > 0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    User currentUser = new User()
+                    {
+                        ID = Guid.NewGuid(),
+                        birthDate = item.birthDate,
+                        address = item.address,
+                        email = item.email,
+                        password = passwordEncruption.Encrypt(item.password),
+                        userName = item.userName,
+                        phoneNumber = item.phoneNumber
+                    };
+                    this.iUnitOfWork.UserRepository.Insert(currentUser);
+                    this.iUnitOfWork.Save();
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
 
         public UserDTO Login(LoginDTO item)
         {
@@ -66,7 +58,7 @@ namespace ElGamal.BL.Classes
             {
                 item.password = passwordEncruption.Encrypt(item.password);
                 User currentUser = this.iUnitOfWork.UserRepository.Get(u => u.email == item.email && u.password == item.password).FirstOrDefault();
-                if (item == null)
+                if (currentUser == null)
                 {
                     return null;
                 }
@@ -77,12 +69,47 @@ namespace ElGamal.BL.Classes
                     address = currentUser.address,
                     phoneNumber = currentUser.phoneNumber,
                     email = currentUser.email,
-                    birthDate = currentUser.birthDate
+                    birthDate = currentUser.birthDate.ToString()
                 };
             }
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+
+        public List<UserDTO> GetAllUsers()
+        {
+            try
+            {
+                return this.iUnitOfWork.UserRepository.Get().Select(x => new UserDTO
+                {
+                    ID = x.ID,
+                    address = x.address,
+                    birthDate = (x.birthDate.HasValue) ? ((DateTime)x.birthDate).ToString("dd/MM/yyyy") : null,
+                    email = x.email,
+                    phoneNumber = x.phoneNumber,
+                    userName = x.userName
+                }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public int DeleteUser(Guid userID)
+        {
+            try
+            {
+                this.iUnitOfWork.UserRepository.Delete(userID);
+                this.iUnitOfWork.Save();
+                return 0;
+            }
+            catch(Exception ex)
+            {
+                return -1;
             }
         }
 

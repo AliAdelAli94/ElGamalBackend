@@ -11,5 +11,16 @@ namespace ElGamal.BL.Interfaces
     {
         UserDTO Login(LoginDTO item);
 
+        List<UserDTO> GetAllUsers();
+
+        int RegisterUser(RegisterDTO item);
+
+        int DeleteUser(Guid userID);
+
+
+
+
+
+
     }
 }

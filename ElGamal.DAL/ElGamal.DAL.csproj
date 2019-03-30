@@ -58,6 +58,7 @@
     <Compile Include="DTOs\ProductDTO.cs" />
     <Compile Include="DTOs\ProductOfferDTO.cs" />
     <Compile Include="DTOs\ProductOptionDTO.cs" />
+    <Compile Include="DTOs\RegisterDTO.cs" />
     <Compile Include="DTOs\UserDTO.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Comment.cs" />
