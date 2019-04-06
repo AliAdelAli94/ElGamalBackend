@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\CategoryDTO.cs" />
+    <Compile Include="DTOs\CategoryDTO2.cs" />
     <Compile Include="DTOs\CommentDTO.cs" />
     <Compile Include="DTOs\DeleteProductDTO.cs" />
     <Compile Include="DTOs\ImageDTO.cs" />

@@ -28,7 +28,8 @@ namespace ElGamal.DAL.Context
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.Categories1)
                 .WithOptional(e => e.Category1)
-                .HasForeignKey(e => e.parentCategoryID);
+                .HasForeignKey(e => e.parentCategoryID)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<Order>()
                 .Property(e => e.total)

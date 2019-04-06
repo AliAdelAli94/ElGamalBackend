@@ -16,6 +16,8 @@ namespace ElGamal.DAL.DTOs
 
         public decimal? priceAfter { get; set; }
 
+        public string discountPercentage { get; set; }
+
         public string description { get; set; }
 
         public decimal? rate { get; set; }

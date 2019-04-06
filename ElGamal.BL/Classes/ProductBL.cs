@@ -279,6 +279,7 @@ namespace ElGamal.BL.Classes
                         name = currentProduct.name,
                         priceAfter = currentProduct.priceAfter,
                         priceBefore = currentProduct.priceBefore,
+                        discountPercentage = (currentProduct.priceAfter != null && currentProduct.priceBefore != null)?String.Format("{0:0.00}", (100 - ((currentProduct.priceAfter * 100) / currentProduct.priceBefore))) + " %" : 0 + " %",
                         ProductOptions = currentProduct.ProductOptions.Select(p => new ProductOptionDTO()
                         {
                             ID = p.ID,

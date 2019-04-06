@@ -15,6 +15,10 @@ namespace ElGamal.BL.Interfaces
 
         List<ParentCategoryDto> GetParentCategories();
 
+        List<CategoryDTO2> GetAllCategoriesDashboard();
+
+        int DeleteCategory(Guid id);
+        int EditCategory(CategoryDTO item);
 
 
     }

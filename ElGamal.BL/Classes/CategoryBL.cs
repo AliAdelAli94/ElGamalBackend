@@ -78,7 +78,86 @@ namespace ElGamal.BL.Classes
                 throw;
             }
         }
-    }
 
+        public List<CategoryDTO2> GetAllCategoriesDashboard()
+        {
+            try
+            {
+                return this.iUnitOfWork.CategoryRepository.Get().Select(x => new CategoryDTO2()
+                {
+
+                    ID = x.ID,
+                    name = x.name,
+                    parentCategoryID = x.parentCategoryID,
+                    parentCategoryName = (x.Category1 != null) ? x.Category1.name : string.Empty,
+
+                }).ToList();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public int DeleteCategory(Guid id)
+        {
+            try
+            {
+                DeleteEntityRecursive(id);
+                this.iUnitOfWork.Save();
+                return 0;
+            }
+            catch (Exception ex)    
+            {
+                return -1;
+            }
+        }
+
+        private void DeleteEntityRecursive(Guid id)
+        {
+            try
+            {
+                List<Category> childCategories = this.iUnitOfWork.CategoryRepository.Get(x => x.parentCategoryID == id).ToList();
+                if (childCategories.Count() == 0)
+                {
+                    this.iUnitOfWork.CategoryRepository.Delete(id);
+                }
+                else
+                {
+                    foreach (var item in childCategories)
+                    {
+                        this.iUnitOfWork.CategoryRepository.DetachEntity(item);
+                        DeleteEntityRecursive(item.ID);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+
+        public int EditCategory(CategoryDTO item)
+        {
+            try
+            {
+                Category currentItem = new Category()
+                {
+                    ID = item.ID,
+                    name = item.name,
+                    parentCategoryID = item.parentCategoryID
+                };
+                this.iUnitOfWork.CategoryRepository.Update(currentItem);
+                this.iUnitOfWork.Save();
+                return 0;
+
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+    }
 
 }

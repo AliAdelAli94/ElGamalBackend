@@ -63,7 +63,52 @@ namespace ElGamal.API.Controllers
         }
 
 
+        [HttpGet]
+        [Route("Category/GetAllCategoriesDashboard/")]
+        public IHttpActionResult GetAllCategoriesDashboard()
+        {
+            try
+            {
+                return Ok(this.iCategoryBL.GetAllCategoriesDashboard());
+            }
+            catch (Exception exp)
+            {
+                return null;
+            }
+        }
 
+
+        [HttpPost]
+        [Route("Category/DeleteCategory/{id}")]
+        public IHttpActionResult DeleteCategory(Guid id)
+        {
+            try
+            {
+                return Ok(this.iCategoryBL.DeleteCategory(id));
+            }
+            catch (Exception exp)
+            {
+                return Content(HttpStatusCode.InternalServerError, -1);
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Category/EditCategory")]
+        public IHttpActionResult EditCategory(CategoryDTO item)
+        {
+            try
+            {
+                return Ok(this.iCategoryBL.EditCategory(item));
+            }
+            catch (Exception exp)
+            {
+                return Content(HttpStatusCode.InternalServerError, -1);
+            }
+        }
+
+
+        
 
     }
 }
