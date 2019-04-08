@@ -122,5 +122,20 @@ namespace ElGamal.API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Product/GetFilteredProducts")]
+        public IHttpActionResult CheckIfProductExits(ProductFilterDTO item)
+        {
+            try
+            {
+                return Ok(this.iProductBL.GetFilteredProducts(item));
+            }
+            catch (Exception exp)
+            {
+                return null;
+            }
+
+        }
+
     }
 }

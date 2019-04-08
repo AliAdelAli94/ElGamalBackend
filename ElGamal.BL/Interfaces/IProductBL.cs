@@ -23,6 +23,9 @@ namespace ElGamal.BL.Interfaces
 
         ProductDTO GetProductById(Guid productID);
 
+        FilteredProductsDTO GetFilteredProducts(ProductFilterDTO filter);
+
+
 
     }
 }

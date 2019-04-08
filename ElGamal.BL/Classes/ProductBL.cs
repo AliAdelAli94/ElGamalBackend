@@ -209,7 +209,7 @@ namespace ElGamal.BL.Classes
                     name = x.name,
                     priceAfter = x.priceAfter,
                     priceBefore = x.priceBefore,
-                    discountPercentage = String.Format("{0:0.00}", (100 - ((x.priceAfter * 100) / x.priceBefore))) + " %" ,
+                    discountPercentage = String.Format("{0:0.00}", (100 - ((x.priceAfter * 100) / x.priceBefore))) + " %",
                     rate = x.rate,
                     images = x.Images.Select(i => new ImageDTO()
                     {
@@ -249,7 +249,7 @@ namespace ElGamal.BL.Classes
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                 }
@@ -268,7 +268,7 @@ namespace ElGamal.BL.Classes
             try
             {
                 Product currentProduct = this.iUnitOfWork.ProductRepository.GetByID(productID);
-                if(currentProduct != null)
+                if (currentProduct != null)
                 {
                     return new ProductDTO()
                     {
@@ -279,7 +279,7 @@ namespace ElGamal.BL.Classes
                         name = currentProduct.name,
                         priceAfter = currentProduct.priceAfter,
                         priceBefore = currentProduct.priceBefore,
-                        discountPercentage = (currentProduct.priceAfter != null && currentProduct.priceBefore != null)?String.Format("{0:0.00}", (100 - ((currentProduct.priceAfter * 100) / currentProduct.priceBefore))) + " %" : 0 + " %",
+                        discountPercentage = (currentProduct.priceAfter != null && currentProduct.priceBefore != null) ? String.Format("{0:0.00}", (100 - ((currentProduct.priceAfter * 100) / currentProduct.priceBefore))) + " %" : 0 + " %",
                         ProductOptions = currentProduct.ProductOptions.Select(p => new ProductOptionDTO()
                         {
                             ID = p.ID,
@@ -319,7 +319,220 @@ namespace ElGamal.BL.Classes
 
         }
 
+        public FilteredProductsDTO GetFilteredProducts(ProductFilterDTO filter)
+        {
+            try
+            {
+                FilteredProductsDTO fPDTO = new FilteredProductsDTO();
+                List<ProductDTO> items = new List<ProductDTO>();
+                if (filter.CategoryID != null)
+                {
+                    if (items.Count == 0)
+                    {
+                        items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == filter.CategoryID).ToList());
+                    }
+                    else
+                    {
+                        items = items.Where(x => x.categoryID.ToString() == filter.CategoryID).ToList();
+                    }
+                }
+                if (filter.CategoriesIDs != null)
+                {
+                    if (items.Count == 0)
+                    {
+                        items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => filter.CategoriesIDs.Contains(x.categoryID.ToString())).ToList());
+                    }
+                    else
+                    {
+                        items = items.Where(x => filter.CategoriesIDs.Contains(x.categoryID.ToString())).ToList();
+                    }
+                }
+                if (filter.NamePart != null)
+                {
+                    if (items.Count == 0)
+                    {
+                        items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => x.name.ToLower().Contains(filter.NamePart.ToLower())).ToList());
+                    }
+                    else
+                    {
+                        items = items.Where(x => x.name.ToLower().Contains(filter.NamePart.ToLower())).ToList();
+                    }
+                }
 
+                if(filter.PriceFrom != null && filter.PriceTO != null)
+                {
+                    if(items.Count == 0)
+                    {
+                        items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => x.priceAfter <= filter.PriceTO && x.priceAfter >= filter.PriceFrom).ToList());
+                    }
+                    else
+                    {
+                        items = items.Where(x => x.priceAfter <= filter.PriceTO && x.priceAfter >= filter.PriceFrom).ToList();
+                    }
+                }
+
+                if (filter.SortingType != null)
+                {
+                    if(items.Count != 0)
+                    {
+                        if(filter.SortingType == 1) // price from high to low
+                        {
+                            ProductPriceFromHighToLow pPFHTL = new ProductPriceFromHighToLow();
+                            items.Sort(pPFHTL);
+                        }
+
+                        if(filter.SortingType == 2) // price from low to high
+                        {
+                            ProductPriceFromLowToHigh pPFLTH = new ProductPriceFromLowToHigh();
+                            items.Sort(pPFLTH);
+                        }
+
+                        if (filter.SortingType == 3) // rate from high to low
+                        {
+                            ProductRateFromHighToLow pRHTL = new ProductRateFromHighToLow();
+                            items.Sort(pRHTL);
+                        }
+                    }
+                }
+
+                // this condition executed if there is no filteration
+                if (items.Count == 0 && filter.PriceFrom == null && filter.PriceTO == null && filter.NamePart == null && filter.CategoryID == null && filter.CategoriesIDs == null)
+                {
+                    items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get().ToList().Take(20).ToList());
+                }
+
+                if (items.Count > 0)
+                {
+                    fPDTO.Brands = items.Select(x => new CategoryDTO()
+                    {
+                        ID = Guid.Parse(x.categoryID.ToString()),
+                        name = x.parentCategoryName
+                    }).Distinct(new CategoryEqualityComparer()).ToList();
+
+                    fPDTO.NumberOfAllItems = items.Count();
+                    fPDTO.NumerOfPages = (int)(decimal.Ceiling((decimal)fPDTO.NumberOfAllItems / 20));
+                    
+                    // this filteration by page number
+                    if (filter.PageNumber == null)
+                    {
+                        items = items.Take(20).ToList();
+                    }
+                    else
+                    {
+                        items = items.Skip((int)filter.PageNumber * 2).Take(20).ToList();
+                    }
+                }
+
+                fPDTO.NumberOfCurrentItems = items.Count();
+                fPDTO.Products = items;
+                return fPDTO;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        private List<ProductDTO> mapObjectProducts(List<Product> items)
+        {
+            try
+            {
+                if (items != null)
+                {
+                    if (items.Count != 0)
+                    {
+                        List<ProductDTO> products = items.Select(x => new ProductDTO()
+                        {
+                            ID = x.ID,
+                            description = x.description,
+                            categoryID = x.categoryID,
+                            parentCategoryName = x.Category.name,
+                            name = x.name,
+                            priceAfter = x.priceAfter,
+                            priceBefore = x.priceBefore,
+                            ProductOptions = x.ProductOptions.Select(p => new ProductOptionDTO()
+                            {
+                                ID = p.ID,
+                                optionText = p.optionText,
+                                productID = x.ID
+
+                            }).ToList(),
+                            rate = x.rate,
+                            images = x.Images.Select(i => new ImageDTO()
+                            {
+                                ID = i.ID,
+                                imageUrl = WebConfigurationManager.AppSettings["WebApiUrl"].ToString() + i.imageUrl,
+                                productID = x.ID
+
+                            }).ToList(),
+
+                            Comments = x.Comments.Select(c => new CommentDTO()
+                            {
+                                ID = c.ID,
+                                commentText = c.commentText,
+                                ratingValue = c.ratingValue,
+                                userID = c.userID,
+                                userName = c.User.userName,
+                                productID = x.ID
+                            }).ToList()
+                        }).ToList();
+
+                        return products;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+
+        private class ProductPriceFromHighToLow : IComparer<ProductDTO>
+        {
+            public int Compare(ProductDTO x, ProductDTO y)
+            {
+                return -1 * ((decimal)x.priceAfter).CompareTo((decimal)y.priceAfter);
+            }
+        }
+        private class ProductPriceFromLowToHigh : IComparer<ProductDTO>
+        {
+            public int Compare(ProductDTO x, ProductDTO y)
+            {
+                return ((decimal)x.priceAfter).CompareTo((decimal)y.priceAfter);
+            }
+        }
+        private class ProductRateFromHighToLow : IComparer<ProductDTO>
+        {
+            public int Compare(ProductDTO x, ProductDTO y)
+            {
+                return -1 * ((decimal)x.rate).CompareTo((decimal)y.rate);
+            }
+        }
+        private class CategoryEqualityComparer : IEqualityComparer<CategoryDTO>
+        {
+            public bool Equals(CategoryDTO x, CategoryDTO y)
+            {
+                return x.ID == y.ID;
+            }
+
+            public int GetHashCode(CategoryDTO obj)
+            {
+                return obj.ID.GetHashCode();
+            }
+        }
 
     }
+
+   
+
 }
