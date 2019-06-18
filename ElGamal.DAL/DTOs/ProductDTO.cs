@@ -20,7 +20,7 @@ namespace ElGamal.DAL.DTOs
 
         public string description { get; set; }
 
-        public decimal? rate { get; set; }
+        public int? rate { get; set; }
 
         public Guid? categoryID { get; set; }
 
@@ -31,6 +31,8 @@ namespace ElGamal.DAL.DTOs
         public List<ProductOptionDTO> ProductOptions { get; set; }
 
         public List<CommentDTO> Comments { get; set; }
+
+        public int NumberOfItems  { get; set; }
 
     }
 }

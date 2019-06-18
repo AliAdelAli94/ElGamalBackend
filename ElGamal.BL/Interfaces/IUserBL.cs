@@ -11,7 +11,7 @@ namespace ElGamal.BL.Interfaces
     {
         UserDTO Login(LoginDTO item);
 
-        List<UserDTO> GetAllUsers();
+        List<UserDTO> GetAllUsers(string role);
 
         int RegisterUser(RegisterDTO item);
 

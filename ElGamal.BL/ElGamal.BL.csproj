@@ -42,15 +42,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\CategoryBL.cs" />
+    <Compile Include="Classes\OrderBL.cs" />
     <Compile Include="Classes\ProductBL.cs" />
     <Compile Include="Classes\UserBl.cs" />
     <Compile Include="Interfaces\ICategoryBL.cs" />
+    <Compile Include="Interfaces\IOrderBL.cs" />
     <Compile Include="Interfaces\IProductBL.cs" />
     <Compile Include="Interfaces\IUserBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\PasswordEncruption.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ElGamal.CommonUtilitiess\ElGamal.CommonUtilitiess.csproj">
+      <Project>{b1f16cbe-6d99-4a8f-a306-6f770444b87c}</Project>
+      <Name>ElGamal.CommonUtilitiess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ElGamal.DAL\ElGamal.DAL.csproj">
       <Project>{83d0b109-68e7-425c-9c7e-d13abeaab784}</Project>
       <Name>ElGamal.DAL</Name>

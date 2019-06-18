@@ -1,5 +1,6 @@
 ﻿using ElGamal.BL.Interfaces;
 using ElGamal.DAL.DTOs;
+using LawFirm.CommonUtilitis.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }
@@ -41,20 +43,22 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }
 
         [HttpGet]
-        [Route("User/GetAllUsers")]
-        public IHttpActionResult GetAllUsers()
+        [Route("User/GetAllUsers/{role}")]
+        public IHttpActionResult GetAllUsers(string role)
         {
             try
             {
-                return Ok(this.iUserBL.GetAllUsers());
+                return Ok(this.iUserBL.GetAllUsers(role));
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }
@@ -70,6 +74,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }

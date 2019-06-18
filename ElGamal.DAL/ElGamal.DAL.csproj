@@ -49,17 +49,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\CardDTO.cs" />
     <Compile Include="DTOs\CategoryDTO.cs" />
     <Compile Include="DTOs\CategoryDTO2.cs" />
+    <Compile Include="DTOs\CheckProductExistDTO.cs" />
     <Compile Include="DTOs\CommentDTO.cs" />
     <Compile Include="DTOs\DeleteProductDTO.cs" />
     <Compile Include="DTOs\FilteredProductsDTO.cs" />
+    <Compile Include="DTOs\GetOrderDTO.cs" />
     <Compile Include="DTOs\ImageDTO.cs" />
     <Compile Include="DTOs\LoginDTO.cs" />
+    <Compile Include="DTOs\MakeOrderResultDTO.cs" />
+    <Compile Include="DTOs\OrderDetailsDTO.cs" />
+    <Compile Include="DTOs\OrderDTO.cs" />
+    <Compile Include="DTOs\OrderProductDTO.cs" />
     <Compile Include="DTOs\ParentCategoryDto.cs" />
     <Compile Include="DTOs\ProductDTO.cs" />
     <Compile Include="DTOs\ProductFilterDTO.cs" />
-    <Compile Include="DTOs\ProductOfferDTO.cs" />
     <Compile Include="DTOs\ProductOptionDTO.cs" />
     <Compile Include="DTOs\RegisterDTO.cs" />
     <Compile Include="DTOs\UserDTO.cs" />
@@ -82,6 +88,12 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ElGamal.CommonUtilitiess\ElGamal.CommonUtilitiess.csproj">
+      <Project>{b1f16cbe-6d99-4a8f-a306-6f770444b87c}</Project>
+      <Name>ElGamal.CommonUtilitiess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

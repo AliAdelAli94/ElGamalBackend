@@ -2,6 +2,7 @@
 using ElGamal.DAL.DTOs;
 using ElGamal.DAL.Entities;
 using ElGamal.DAL.UOF;
+using LawFirm.CommonUtilitis.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return -1;
             }
         }
@@ -51,6 +53,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
             }
         }
@@ -74,6 +77,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
                 throw;
             }
@@ -95,6 +99,7 @@ namespace ElGamal.BL.Classes
             }
             catch(Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
             }
         }
@@ -109,6 +114,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)    
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return -1;
             }
         }
@@ -133,7 +139,7 @@ namespace ElGamal.BL.Classes
             }
             catch(Exception ex)
             {
-
+                ErrorLogger.LogDebug(ex.Message);
             }
         }
 
@@ -154,6 +160,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return -1;
             }
         }

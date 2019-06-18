@@ -16,6 +16,8 @@ namespace ElGamal.DAL.DTOs
 
         public int NumberOfCurrentItems { get; set; }
 
+        public int MaxPriceValue { get; set; }
+
         public List<CategoryDTO> Brands { get; set; }
 
     }

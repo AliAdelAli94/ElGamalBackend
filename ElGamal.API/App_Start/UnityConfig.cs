@@ -48,6 +48,7 @@ namespace ElGamal.API
             container.RegisterType<ICategoryBL, CategoryBL>();
             container.RegisterType<IProductBL, ProductBL>();
             container.RegisterType<IUserBL, UserBl>();
+            container.RegisterType<IOrderBL, OrderBL>();
 
         }
     }

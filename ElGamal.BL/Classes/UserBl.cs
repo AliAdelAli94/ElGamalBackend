@@ -3,6 +3,7 @@ using ElGamal.BL.Utils;
 using ElGamal.DAL.DTOs;
 using ElGamal.DAL.Entities;
 using ElGamal.DAL.UOF;
+using LawFirm.CommonUtilitis.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace ElGamal.BL.Classes
         {
             try
             {
-                if(this.iUnitOfWork.UserRepository.Get(x => x.email == item.email).Count() > 0)
+                if(this.iUnitOfWork.UserRepository.Get(x => x.email == item.email && x.role == item.role).Count() > 0)
                 {
                     return 1;
                 }
@@ -39,7 +40,8 @@ namespace ElGamal.BL.Classes
                         email = item.email,
                         password = passwordEncruption.Encrypt(item.password),
                         userName = item.userName,
-                        phoneNumber = item.phoneNumber
+                        phoneNumber = item.phoneNumber,
+                        role = item.role                       
                     };
                     this.iUnitOfWork.UserRepository.Insert(currentUser);
                     this.iUnitOfWork.Save();
@@ -48,6 +50,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return -1;
             }
         }
@@ -57,7 +60,7 @@ namespace ElGamal.BL.Classes
             try
             {
                 item.password = passwordEncruption.Encrypt(item.password);
-                User currentUser = this.iUnitOfWork.UserRepository.Get(u => u.email == item.email && u.password == item.password).FirstOrDefault();
+                User currentUser = this.iUnitOfWork.UserRepository.Get(u => u.email == item.email && u.password == item.password && u.role == item.role).FirstOrDefault();
                 if (currentUser == null)
                 {
                     return null;
@@ -74,15 +77,16 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
             }
         }
 
-        public List<UserDTO> GetAllUsers()
+        public List<UserDTO> GetAllUsers(string role)
         {
             try
             {
-                return this.iUnitOfWork.UserRepository.Get().Select(x => new UserDTO
+                return this.iUnitOfWork.UserRepository.Get(x => x.role == role).Select(x => new UserDTO
                 {
                     ID = x.ID,
                     address = x.address,
@@ -91,10 +95,10 @@ namespace ElGamal.BL.Classes
                     phoneNumber = x.phoneNumber,
                     userName = x.userName
                 }).ToList();
-
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
             }
         }
@@ -109,6 +113,7 @@ namespace ElGamal.BL.Classes
             }
             catch(Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return -1;
             }
         }

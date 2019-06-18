@@ -1,5 +1,6 @@
 ﻿using ElGamal.BL.Interfaces;
 using ElGamal.DAL.DTOs;
+using LawFirm.CommonUtilitis.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }
@@ -43,6 +45,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }
@@ -58,6 +61,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return Content(HttpStatusCode.InternalServerError,-1);
             }
         }
@@ -73,6 +77,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }
@@ -88,6 +93,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return Content(HttpStatusCode.InternalServerError, -1);
             }
         }
@@ -103,6 +109,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return Content(HttpStatusCode.InternalServerError, -1);
             }
         }

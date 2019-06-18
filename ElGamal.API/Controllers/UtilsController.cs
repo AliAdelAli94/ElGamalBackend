@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LawFirm.CommonUtilitis.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -76,6 +77,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new ObjectContent(ex.GetType(), ex, new JsonMediaTypeFormatter()) };
             }
         }

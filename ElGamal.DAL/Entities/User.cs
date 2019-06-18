@@ -31,6 +31,8 @@ namespace ElGamal.DAL.Entities
 
         public string address { get; set; }
 
+        public string role { get; set; }
+
         [Column(TypeName = "date")]
         public DateTime? birthDate { get; set; }
 

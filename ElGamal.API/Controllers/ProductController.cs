@@ -1,6 +1,7 @@
 ﻿using ElGamal.BL.Interfaces;
 using ElGamal.DAL.Context;
 using ElGamal.DAL.DTOs;
+using LawFirm.CommonUtilitis.Logging;
 using System;
 using System.Web.Http;
 
@@ -16,16 +17,17 @@ namespace ElGamal.API.Controllers
             this.iProductBL = iPBL;
         }
 
-        [HttpGet]
-        [Route("Product/CheckIfProductExits/{productName}")]
-        public IHttpActionResult CheckIfProductExits(string productName)
+        [HttpPost]
+        [Route("Product/CheckIfProductExits/")]
+        public IHttpActionResult CheckIfProductExits(CheckProductExistDTO item)
         {
             try
             {
-                return Ok(this.iProductBL.CheckIfProductExits(productName));
+                return Ok(this.iProductBL.CheckIfProductExits(item.ProductName));
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null; 
             }
 
@@ -41,6 +43,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }
@@ -52,10 +55,12 @@ namespace ElGamal.API.Controllers
         {
             try
             {
+                ErrorLogger.LogDebug("ssssss");
                 return Ok(this.iProductBL.GetAllProducts());
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
 
@@ -71,6 +76,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
 
@@ -87,6 +93,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
 
@@ -103,6 +110,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }
@@ -118,6 +126,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
         }
@@ -132,6 +141,7 @@ namespace ElGamal.API.Controllers
             }
             catch (Exception exp)
             {
+                ErrorLogger.LogDebug(exp.Message);
                 return null;
             }
 

@@ -2,6 +2,7 @@
 using ElGamal.DAL.DTOs;
 using ElGamal.DAL.Entities;
 using ElGamal.DAL.UOF;
+using LawFirm.CommonUtilitis.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,6 +31,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return -1;
             }
         }
@@ -57,6 +59,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return -1;
             }
         }
@@ -81,7 +84,7 @@ namespace ElGamal.BL.Classes
                         productID = x.ID
 
                     }).ToList(),
-                    rate = x.rate,
+                    rate = (x.rate == null)? 0: (int?)x.rate,
                     images = x.Images.Select(i => new ImageDTO()
                     {
                         ID = i.ID,
@@ -105,6 +108,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
             }
         }
@@ -191,16 +195,17 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return -1;
             }
         }
 
-        public List<ProductOfferDTO> GetAllOffers()
+        public List<ProductDTO> GetAllOffers()
         {
             try
             {
 
-                List<ProductOfferDTO> offers = this.iUnitOfWork.ProductRepository.Get(y => y.priceBefore != null && y.priceAfter != null).Select(x => new ProductOfferDTO()
+                List<ProductDTO> offers = this.iUnitOfWork.ProductRepository.Get(y => y.priceBefore != null && y.priceAfter != null).Select(x => new ProductDTO()
                 {
                     ID = x.ID,
                     description = x.description,
@@ -210,7 +215,7 @@ namespace ElGamal.BL.Classes
                     priceAfter = x.priceAfter,
                     priceBefore = x.priceBefore,
                     discountPercentage = String.Format("{0:0.00}", (100 - ((x.priceAfter * 100) / x.priceBefore))) + " %",
-                    rate = x.rate,
+                    rate = (x.rate == null) ? 0 : (int?)x.rate,
                     images = x.Images.Select(i => new ImageDTO()
                     {
                         ID = i.ID,
@@ -225,6 +230,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
             }
         }
@@ -251,7 +257,7 @@ namespace ElGamal.BL.Classes
                 }
                 catch (Exception ex)
                 {
-
+                    ErrorLogger.LogDebug(ex.Message);
                 }
                 this.iUnitOfWork.ProductRepository.Delete(data.productID);
                 this.iUnitOfWork.Save();
@@ -287,7 +293,7 @@ namespace ElGamal.BL.Classes
                             productID = currentProduct.ID
 
                         }).ToList(),
-                        rate = currentProduct.rate,
+                        rate = (int)currentProduct.rate,
                         images = currentProduct.Images.Select(i => new ImageDTO()
                         {
                             ID = i.ID,
@@ -314,6 +320,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
             }
 
@@ -325,6 +332,7 @@ namespace ElGamal.BL.Classes
             {
                 FilteredProductsDTO fPDTO = new FilteredProductsDTO();
                 List<ProductDTO> items = new List<ProductDTO>();
+
                 if (filter.CategoryID != null)
                 {
                     if (items.Count == 0)
@@ -336,9 +344,10 @@ namespace ElGamal.BL.Classes
                         items = items.Where(x => x.categoryID.ToString() == filter.CategoryID).ToList();
                     }
                 }
+
                 if (filter.CategoriesIDs != null)
                 {
-                    if (items.Count == 0)
+                    if (items.Count > 0)
                     {
                         items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => filter.CategoriesIDs.Contains(x.categoryID.ToString())).ToList());
                     }
@@ -347,7 +356,8 @@ namespace ElGamal.BL.Classes
                         items = items.Where(x => filter.CategoriesIDs.Contains(x.categoryID.ToString())).ToList();
                     }
                 }
-                if (filter.NamePart != null)
+
+                if (filter.NamePart != null && filter.NamePart != string.Empty)
                 {
                     if (items.Count == 0)
                     {
@@ -358,6 +368,7 @@ namespace ElGamal.BL.Classes
                         items = items.Where(x => x.name.ToLower().Contains(filter.NamePart.ToLower())).ToList();
                     }
                 }
+
 
                 if(filter.PriceFrom != null && filter.PriceTO != null)
                 {
@@ -371,17 +382,24 @@ namespace ElGamal.BL.Classes
                     }
                 }
 
+                
+                // this condition executed if there is no filteration
+                if (items.Count == 0 && filter.PriceFrom == null && filter.PriceTO == null && filter.NamePart == null && filter.CategoryID == null && filter.CategoriesIDs == null)
+                {
+                    items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get().ToList().Take(20).ToList());
+                }
+
                 if (filter.SortingType != null)
                 {
-                    if(items.Count != 0)
+                    if (items.Count != 0)
                     {
-                        if(filter.SortingType == 1) // price from high to low
+                        if (filter.SortingType == 1) // price from high to low
                         {
                             ProductPriceFromHighToLow pPFHTL = new ProductPriceFromHighToLow();
                             items.Sort(pPFHTL);
                         }
 
-                        if(filter.SortingType == 2) // price from low to high
+                        if (filter.SortingType == 2) // price from low to high
                         {
                             ProductPriceFromLowToHigh pPFLTH = new ProductPriceFromLowToHigh();
                             items.Sort(pPFLTH);
@@ -395,11 +413,6 @@ namespace ElGamal.BL.Classes
                     }
                 }
 
-                // this condition executed if there is no filteration
-                if (items.Count == 0 && filter.PriceFrom == null && filter.PriceTO == null && filter.NamePart == null && filter.CategoryID == null && filter.CategoriesIDs == null)
-                {
-                    items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get().ToList().Take(20).ToList());
-                }
 
                 if (items.Count > 0)
                 {
@@ -411,15 +424,16 @@ namespace ElGamal.BL.Classes
 
                     fPDTO.NumberOfAllItems = items.Count();
                     fPDTO.NumerOfPages = (int)(decimal.Ceiling((decimal)fPDTO.NumberOfAllItems / 20));
-                    
+                    fPDTO.MaxPriceValue = (int)items.Max(x => x.priceAfter).Value + 100;
+
                     // this filteration by page number
-                    if (filter.PageNumber == null)
+                    if (filter.PageNumber == null || filter.PageNumber == 1)
                     {
                         items = items.Take(20).ToList();
                     }
                     else
                     {
-                        items = items.Skip((int)filter.PageNumber * 2).Take(20).ToList();
+                        items = items.Skip((int)filter.PageNumber * 20).Take(20).ToList();
                     }
                 }
 
@@ -429,6 +443,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
             }
         }
@@ -457,7 +472,7 @@ namespace ElGamal.BL.Classes
                                 productID = x.ID
 
                             }).ToList(),
-                            rate = x.rate,
+                            rate = (int?)x.rate,
                             images = x.Images.Select(i => new ImageDTO()
                             {
                                 ID = i.ID,
@@ -492,6 +507,7 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug(ex.Message);
                 return null;
             }
         }

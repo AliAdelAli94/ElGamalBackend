@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElGamal.BL", "ElGamal.BL\El
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElGamal.API", "ElGamal.API\ElGamal.API.csproj", "{29899C73-201F-4E3D-B11B-5DBBF95A8C41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElGamal.CommonUtilitiess", "ElGamal.CommonUtilitiess\ElGamal.CommonUtilitiess.csproj", "{B1F16CBE-6D99-4A8F-A306-6F770444B87C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{29899C73-201F-4E3D-B11B-5DBBF95A8C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29899C73-201F-4E3D-B11B-5DBBF95A8C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29899C73-201F-4E3D-B11B-5DBBF95A8C41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1F16CBE-6D99-4A8F-A306-6F770444B87C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F16CBE-6D99-4A8F-A306-6F770444B87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F16CBE-6D99-4A8F-A306-6F770444B87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1F16CBE-6D99-4A8F-A306-6F770444B87C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

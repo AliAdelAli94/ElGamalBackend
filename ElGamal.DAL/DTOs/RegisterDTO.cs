@@ -20,6 +20,8 @@ namespace ElGamal.DAL.DTOs
 
         public string address { get; set; }
 
+        public string role { get; set; }
+
         public DateTime? birthDate { get; set; }
 
     }
