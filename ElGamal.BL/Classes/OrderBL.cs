@@ -41,6 +41,7 @@ namespace ElGamal.BL.Classes
                             shippingAmount = item.cartData.shipingPrice,
                             total = item.cartData.productsPrice,
                             userID = Guid.Parse(item.userID),
+                            date = DateTime.Now
                         };
 
 
@@ -77,15 +78,15 @@ namespace ElGamal.BL.Classes
             return result;
         }
 
-        public List<GetOrderDTO> GetOrdersByStatus(bool status)
+        public List<GetOrderDTO> GetOrdersByStatus()
         {
             List<GetOrderDTO> result = new List<GetOrderDTO>();
             try
             {
-                result = this.iUnitOfWork.OrderRepository.Get(x => x.status == status).Select(x => new GetOrderDTO()
+                result = this.iUnitOfWork.OrderRepository.Get().Select(x => new GetOrderDTO()
                 {
                     ID = x.ID,
-                    status = x.status,
+                    status = (x.status == true) ? "مكتمل" : "غير مكتمل",
                     shippingAmount = x.shippingAmount,
                     userName = x.User.userName,
                     total = x.total
@@ -110,8 +111,11 @@ namespace ElGamal.BL.Classes
                     item.userName = temp.User.userName;
                     item.userID = temp.userID;
                     item.total = temp.total;
-                    item.status = temp.status;
+                    item.status = (temp.status == true) ? "مكتمل" : "غير مكتمل";
                     item.shippingAmount = temp.shippingAmount;
+                    item.Address = temp.User.address;
+                    item.Phone = temp.User.phoneNumber;
+                    item.date = temp.date.ToString("MM/dd/yyyy hh:mm tt");
                     item.OrderDetails = temp.OrderDetails.Select(x => new OrderProductDTO()
                     {
                         buyingPrice = x.buyingPrice,
@@ -127,6 +131,26 @@ namespace ElGamal.BL.Classes
                 ErrorLogger.LogDebug(ex.Message);
             }
             return item;
+        }
+
+        public int ConfirmOrder(Guid id)
+        {
+            try
+            {
+                Order item = this.iUnitOfWork.OrderRepository.GetByID(id);
+                if(item != null)
+                {
+                    item.status = true;
+                    this.iUnitOfWork.OrderRepository.Update(item);
+                    this.iUnitOfWork.Save();
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogDebug(ex.Message);
+                return-1;
+            }
         }
 
     }

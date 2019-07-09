@@ -36,11 +36,11 @@ namespace ElGamal.API.Controllers
 
         [HttpGet]
         [Route("Order/GetOrdersByStatus")]
-        public IHttpActionResult GetOrdersByStatus(bool status)
+        public IHttpActionResult GetOrdersByStatus()
         {
             try
             {
-                return Ok(this.iOrderBL.GetOrdersByStatus(status));
+                return Ok(this.iOrderBL.GetOrdersByStatus());
             }
             catch (Exception exp)
             {
@@ -56,6 +56,21 @@ namespace ElGamal.API.Controllers
             try
             {
                 return Ok(this.iOrderBL.GetOrderDetailsByID(id));
+            }
+            catch (Exception exp)
+            {
+                ErrorLogger.LogDebug(exp.Message);
+                return null;
+            }
+        }
+
+        [HttpPost]
+        [Route("Order/ConfirmOrder")]
+        public IHttpActionResult ConfirmOrder(Guid id)
+        {
+            try
+            {
+                return Ok(this.iOrderBL.ConfirmOrder(id));
             }
             catch (Exception exp)
             {

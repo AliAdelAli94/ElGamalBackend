@@ -84,7 +84,7 @@ namespace ElGamal.BL.Classes
                         productID = x.ID
 
                     }).ToList(),
-                    rate = (x.rate == null)? 0: (int?)x.rate,
+                    rate = (x.rate == null) ? 0 : (int?)x.rate,
                     images = x.Images.Select(i => new ImageDTO()
                     {
                         ID = i.ID,
@@ -326,6 +326,46 @@ namespace ElGamal.BL.Classes
 
         }
 
+        public int AddComment(CommentDTO item)
+        {
+            try
+            {
+                if (item != null)
+                {
+                    Comment temp = new Comment()
+                    {
+                        ID = Guid.NewGuid(),
+                        commentText = item.commentText,
+                        productID = item.productID,
+                        ratingValue = item.ratingValue,
+                        userID = item.userID
+                    };
+
+                    this.iUnitOfWork.CommentRepository.Insert(temp);
+                    var allComments = this.iUnitOfWork.CommentRepository.Get(x => x.productID == item.productID);
+                    if(allComments != null)
+                    {
+                        var rate = (allComments.Sum(x => x.ratingValue) + item.ratingValue) / (allComments.Count() + 1);
+                        rate = decimal.Ceiling((decimal)rate);
+                        var currentProduct = this.iUnitOfWork.ProductRepository.GetByID(item.productID);
+                        if(currentProduct != null)
+                        {
+                            currentProduct.rate = rate;
+                            this.iUnitOfWork.ProductRepository.Update(currentProduct);
+                        }
+                    }
+
+                    this.iUnitOfWork.Save();
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogDebug(ex.Message);
+                return -1;
+            }
+        }
+
         public FilteredProductsDTO GetFilteredProducts(ProductFilterDTO filter)
         {
             try
@@ -370,9 +410,9 @@ namespace ElGamal.BL.Classes
                 }
 
 
-                if(filter.PriceFrom != null && filter.PriceTO != null)
+                if (filter.PriceFrom != null && filter.PriceTO != null)
                 {
-                    if(items.Count == 0)
+                    if (items.Count == 0)
                     {
                         items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => x.priceAfter <= filter.PriceTO && x.priceAfter >= filter.PriceFrom).ToList());
                     }
@@ -382,7 +422,7 @@ namespace ElGamal.BL.Classes
                     }
                 }
 
-                
+
                 // this condition executed if there is no filteration
                 if (items.Count == 0 && filter.PriceFrom == null && filter.PriceTO == null && filter.NamePart == null && filter.CategoryID == null && filter.CategoriesIDs == null)
                 {
@@ -549,6 +589,6 @@ namespace ElGamal.BL.Classes
 
     }
 
-   
+
 
 }

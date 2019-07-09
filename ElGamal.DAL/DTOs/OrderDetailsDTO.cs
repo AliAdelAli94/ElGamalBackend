@@ -19,9 +19,15 @@ namespace ElGamal.DAL.DTOs
 
         public string userName { get; set; }
 
-        public bool status { get; set; }
+        public string status { get; set; }
 
         public List<OrderProductDTO> OrderDetails { get; set; }
+
+        public string Address { get; set; }
+
+        public string Phone { get; set; }
+
+        public string date { get; set; }
 
     }
 }

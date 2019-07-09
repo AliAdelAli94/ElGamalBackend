@@ -147,5 +147,21 @@ namespace ElGamal.API.Controllers
 
         }
 
+        [HttpPost]
+        [Route("Product/AddComment")]
+        public IHttpActionResult AddComment(CommentDTO item)
+        {
+            try
+            {
+                return Ok(this.iProductBL.AddComment(item));
+            }
+            catch (Exception exp)
+            {
+                ErrorLogger.LogDebug(exp.Message);
+                return null;
+            }
+        }
+
+
     }
 }

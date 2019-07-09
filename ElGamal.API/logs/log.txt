@@ -1,3 +1,11 @@
 2019-05-17 18:48:54,017 - ssssss
 2019-05-17 18:49:39,719 - ssssss
 2019-06-18 20:42:46,468 - ssssss
+2019-06-25 22:03:19,639 - The 'date' property on 'Order' could not be set to a 'null' value. You must set this property to a non-null value of type 'System.DateTime'. 
+2019-06-25 22:04:34,121 - The 'date' property on 'Order' could not be set to a 'null' value. You must set this property to a non-null value of type 'System.DateTime'. 
+2019-06-25 22:04:38,722 - The 'date' property on 'Order' could not be set to a 'null' value. You must set this property to a non-null value of type 'System.DateTime'. 
+2019-06-25 22:04:48,774 - The 'date' property on 'Order' could not be set to a 'null' value. You must set this property to a non-null value of type 'System.DateTime'. 
+2019-07-05 17:49:40,747 - Object reference not set to an instance of an object.
+2019-07-06 03:10:17,844 - An error occurred while updating the entries. See the inner exception for details.
+2019-07-06 03:17:47,894 - An error occurred while updating the entries. See the inner exception for details.
+2019-07-09 13:49:12,296 - Object reference not set to an instance of an object.

@@ -16,6 +16,8 @@ namespace ElGamal.DAL.DTOs
 
         public string userName { get; set; }
 
-        public bool status { get; set; }
+        public String status { get; set; }
+
+        public string date { get; set; }
     }
 }

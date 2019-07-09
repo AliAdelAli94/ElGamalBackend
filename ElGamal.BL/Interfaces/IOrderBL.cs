@@ -11,9 +11,12 @@ namespace ElGamal.BL.Interfaces
     {
         MakeOrderResultDTO MakeOrder(OrderDTO item);
 
-        List<GetOrderDTO> GetOrdersByStatus(bool status);
+        List<GetOrderDTO> GetOrdersByStatus();
 
         OrderDetailsDTO GetOrderDetailsByID(Guid id);
+
+        int ConfirmOrder(Guid id);
+
 
     }
 }

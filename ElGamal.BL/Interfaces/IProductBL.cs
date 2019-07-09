@@ -25,6 +25,8 @@ namespace ElGamal.BL.Interfaces
 
         FilteredProductsDTO GetFilteredProducts(ProductFilterDTO filter);
 
+        int AddComment(CommentDTO item);
+
 
 
     }
