@@ -47,6 +47,7 @@ namespace ElGamal.BL.Classes
                     description = item.description,
                     name = item.name,
                     priceBefore = item.priceBefore,
+                    rate = 0,
                     priceAfter = item.priceAfter,
                     Images = item.images.Select(x => new Image() { imageUrl = x.imageUrl, ID = Guid.NewGuid() }).ToList(),
                     ProductOptions = item.ProductOptions.Select(x => new ProductOption() { optionText = x.optionText, ID = Guid.NewGuid() }).ToList()
@@ -375,26 +376,25 @@ namespace ElGamal.BL.Classes
 
                 if (filter.CategoryID != null)
                 {
-                    if (items.Count == 0)
-                    {
-                        items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == filter.CategoryID).ToList());
-                    }
-                    else
-                    {
-                        items = items.Where(x => x.categoryID.ToString() == filter.CategoryID).ToList();
-                    }
+                    items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == filter.CategoryID).ToList());
+                    var productsOfChildCategories = GetProductsOFCategory(filter.CategoryID);
+                    items.AddRange(productsOfChildCategories);             
                 }
 
                 if (filter.CategoriesIDs != null)
                 {
-                    if (items.Count > 0)
+                    if(filter.CategoriesIDs.Count > 0)
                     {
-                        items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => filter.CategoriesIDs.Contains(x.categoryID.ToString())).ToList());
+                        if (items.Count == 0)
+                        {
+                            items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => filter.CategoriesIDs.Contains(x.categoryID.ToString())).ToList());
+                        }
+                        else
+                        {
+                            items = items.Where(x => filter.CategoriesIDs.Contains(x.categoryID.ToString())).ToList();
+                        }
                     }
-                    else
-                    {
-                        items = items.Where(x => filter.CategoriesIDs.Contains(x.categoryID.ToString())).ToList();
-                    }
+                   
                 }
 
                 if (filter.NamePart != null && filter.NamePart != string.Empty)
@@ -488,6 +488,32 @@ namespace ElGamal.BL.Classes
             }
         }
 
+        private List<ProductDTO> GetProductsOFCategory(string CategoryID)
+        {
+            List<string> Categories = new List<string>();
+            List<ProductDTO> products = new List<ProductDTO>();
+            try
+            {
+                Categories = this.iUnitOfWork.CategoryRepository.Get(x => x.parentCategoryID.ToString() == CategoryID).Select(z => z.ID.ToString()).ToList();
+                if (Categories.Count != 0)
+                {
+                    foreach (var item in Categories)
+                    {
+                        var temp = (this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == item) != null) ? this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == item).ToList():new List<Product>();
+                        if(temp.Count > 0)
+                        {
+                            products.AddRange(mapObjectProducts(temp));
+                        }
+                        GetProductsOFCategory(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogDebug(ex.Message);
+            }
+            return products;
+        }
         private List<ProductDTO> mapObjectProducts(List<Product> items)
         {
             try
@@ -536,19 +562,19 @@ namespace ElGamal.BL.Classes
                     }
                     else
                     {
-                        return null;
+                        return new List<ProductDTO>();
                     }
                 }
                 else
                 {
-                    return null;
+                    return new List<ProductDTO>();
                 }
 
             }
             catch (Exception ex)
             {
                 ErrorLogger.LogDebug(ex.Message);
-                return null;
+                return new List<ProductDTO>();
             }
         }
 
