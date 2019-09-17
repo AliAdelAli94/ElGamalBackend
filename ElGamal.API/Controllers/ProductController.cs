@@ -100,6 +100,22 @@ namespace ElGamal.API.Controllers
         }
 
 
+        [HttpGet]
+        [Route("Product/GetAllFavourites/")]
+        public IHttpActionResult GetAllFavourites(Guid userID)
+        {
+            try
+            {
+                return Ok(this.iProductBL.GetAllFavourites(userID));
+            }
+            catch (Exception exp)
+            {
+                ErrorLogger.LogDebug(exp.Message);
+                return null;
+            }
+
+        }
+
         [HttpPost]
         [Route("Product/EditProduct")]
         public IHttpActionResult EditProduct(ProductDTO item)
@@ -114,6 +130,23 @@ namespace ElGamal.API.Controllers
                 return null;
             }
         }
+
+
+        [HttpPost]
+        [Route("Product/MakeProductFavourite")]
+        public IHttpActionResult MakeProductFavourite(Guid productID , Guid userID)
+        {
+            try
+            {
+                return Ok(this.iProductBL.MakeProductFavourite(productID,userID));
+            }
+            catch (Exception exp)
+            {
+                ErrorLogger.LogDebug(exp.Message);
+                return null;
+            }
+        }
+
 
 
         [HttpPost]

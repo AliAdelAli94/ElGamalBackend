@@ -143,3 +143,11 @@ CREATE DATABASE failed. Some file names listed could not be created. Check relat
 CREATE DATABASE failed. Some file names listed could not be created. Check related errors.
 2019-08-25 00:48:58,500 - Cannot create file 'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\ElGamal.mdf' because it already exists. Change the file path or the file name, and retry the operation.
 CREATE DATABASE failed. Some file names listed could not be created. Check related errors.
+2019-08-26 00:25:35,661 - Cannot create file 'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\ElGamal.mdf' because it already exists. Change the file path or the file name, and retry the operation.
+CREATE DATABASE failed. Some file names listed could not be created. Check related errors.
+2019-08-26 00:25:35,820 - Cannot create file 'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\ElGamal.mdf' because it already exists. Change the file path or the file name, and retry the operation.
+CREATE DATABASE failed. Some file names listed could not be created. Check related errors.
+2019-08-26 00:27:02,803 - Cannot create file 'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\ElGamal.mdf' because it already exists. Change the file path or the file name, and retry the operation.
+CREATE DATABASE failed. Some file names listed could not be created. Check related errors.
+2019-08-26 00:27:25,957 - Cannot create file 'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\ElGamal.mdf' because it already exists. Change the file path or the file name, and retry the operation.
+CREATE DATABASE failed. Some file names listed could not be created. Check related errors.

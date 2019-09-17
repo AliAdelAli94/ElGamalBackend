@@ -78,5 +78,20 @@ namespace ElGamal.API.Controllers
                 return null;
             }
         }
+
+        [HttpGet]
+        [Route("Order/GetOrdersToUser")]
+        public IHttpActionResult GetOrdersToUser(Guid id)
+        {
+            try
+            {
+                return Ok(this.iOrderBL.GetOrdersToUser(id));
+            }
+            catch (Exception exp)
+            {
+                ErrorLogger.LogDebug(exp.Message);
+                return null;
+            }
+        }
     }
 }

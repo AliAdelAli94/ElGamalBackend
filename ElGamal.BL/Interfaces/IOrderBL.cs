@@ -17,6 +17,8 @@ namespace ElGamal.BL.Interfaces
 
         int ConfirmOrder(Guid id);
 
+        List<GetOrderDTO> GetOrdersToUser(Guid userID);
+
 
     }
 }

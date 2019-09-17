@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 
 namespace ElGamal.BL.Classes
 {
@@ -122,7 +123,13 @@ namespace ElGamal.BL.Classes
                         description = x.Product.description,
                         name = x.Product.name,
                         productID = x.productID,
-                        quantity = x.quantity
+                        quantity = x.quantity,
+                        image = x.Product.Images.Select(k => new ImageDTO() {
+                            ID = k.ID,
+                            imageUrl = WebConfigurationManager.AppSettings["WebApiUrl"].ToString() + k.imageUrl,
+                        }).FirstOrDefault(),
+                        NumberOfItems = (int)x.quantity,
+                        
                     }).ToList();
                 }
             }
@@ -151,6 +158,37 @@ namespace ElGamal.BL.Classes
                 ErrorLogger.LogDebug(ex.Message);
                 return-1;
             }
+        }
+
+        public List<GetOrderDTO> GetOrdersToUser(Guid userID)
+        {
+            List<GetOrderDTO> orders = new List<GetOrderDTO>();
+            try
+            {
+                if(userID != null)
+                {
+                    var items = this.iUnitOfWork.OrderRepository.Get(x => x.userID == userID);
+                    if(items != null)
+                    {
+                        if(items.Count() > 0)
+                        {
+                            orders = items.Select(x => new GetOrderDTO()
+                            {
+                                ID = x.ID,
+                                date = x.date.ToString("MM/dd/yyyy"),
+                                status = x.status.ToString(),
+                                total = x.total
+
+                            }).ToList();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogDebug(ex.Message);
+            }
+            return orders;
         }
 
     }

@@ -79,5 +79,22 @@ namespace ElGamal.API.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("User/EditUser/")]
+        public IHttpActionResult EditUser([FromBody] UserDTO data)
+        {
+            try
+            {
+                return Ok(this.iUserBL.EditUser(data));
+            }
+            catch (Exception exp)
+            {
+                ErrorLogger.LogDebug(exp.Message);
+                return null;
+            }
+        }
+
+
+
     }
 }

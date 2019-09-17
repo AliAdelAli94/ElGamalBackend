@@ -17,5 +17,9 @@ namespace ElGamal.DAL.DTOs
         public string name { get; set; }
 
         public string description { get; set; }
+
+        public ImageDTO image { get; set; }
+
+        public int NumberOfItems { get; set; }
     }
 }

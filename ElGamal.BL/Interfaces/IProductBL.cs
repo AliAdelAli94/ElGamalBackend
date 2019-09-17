@@ -27,6 +27,10 @@ namespace ElGamal.BL.Interfaces
 
         int AddComment(CommentDTO item);
 
+        int MakeProductFavourite(Guid productID, Guid userID);
+
+        List<ProductDTO> GetAllFavourites(Guid userID);
+               
 
 
     }

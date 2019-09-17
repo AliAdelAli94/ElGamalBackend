@@ -344,12 +344,12 @@ namespace ElGamal.BL.Classes
 
                     this.iUnitOfWork.CommentRepository.Insert(temp);
                     var allComments = this.iUnitOfWork.CommentRepository.Get(x => x.productID == item.productID);
-                    if(allComments != null)
+                    if (allComments != null)
                     {
                         var rate = (allComments.Sum(x => x.ratingValue) + item.ratingValue) / (allComments.Count() + 1);
                         rate = decimal.Ceiling((decimal)rate);
                         var currentProduct = this.iUnitOfWork.ProductRepository.GetByID(item.productID);
-                        if(currentProduct != null)
+                        if (currentProduct != null)
                         {
                             currentProduct.rate = rate;
                             this.iUnitOfWork.ProductRepository.Update(currentProduct);
@@ -378,12 +378,12 @@ namespace ElGamal.BL.Classes
                 {
                     items = mapObjectProducts(this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == filter.CategoryID).ToList());
                     var productsOfChildCategories = GetProductsOFCategory(filter.CategoryID);
-                    items.AddRange(productsOfChildCategories);             
+                    items.AddRange(productsOfChildCategories);
                 }
 
                 if (filter.CategoriesIDs != null)
                 {
-                    if(filter.CategoriesIDs.Count > 0)
+                    if (filter.CategoriesIDs.Count > 0)
                     {
                         if (items.Count == 0)
                         {
@@ -394,7 +394,7 @@ namespace ElGamal.BL.Classes
                             items = items.Where(x => filter.CategoriesIDs.Contains(x.categoryID.ToString())).ToList();
                         }
                     }
-                   
+
                 }
 
                 if (filter.NamePart != null && filter.NamePart != string.Empty)
@@ -488,6 +488,74 @@ namespace ElGamal.BL.Classes
             }
         }
 
+        public int MakeProductFavourite(Guid productID, Guid userID)
+        {
+            try
+            {
+                if (productID != null && userID != null)
+                {
+                    var item = this.iUnitOfWork.FavouriteRepository.Get(x => x.productID == productID && x.userID == userID);
+
+                    if (item.Count() > 0)
+                    {
+                        return 2;
+                    }
+                    else
+                    {
+                        this.iUnitOfWork.FavouriteRepository.Insert(new Favourite()
+                        {
+                            ID = Guid.NewGuid(),
+                            productID = productID,
+                            userID = userID
+                        });
+                        this.iUnitOfWork.Save();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogDebug(ex.Message);
+                return -1;
+            }
+            return 0;
+        }
+
+        public List<ProductDTO> GetAllFavourites(Guid userID)
+        {
+            try
+            {
+                var items = this.iUnitOfWork.FavouriteRepository.Get(x => x.userID == userID);
+                List<ProductDTO> favourites = items.Join(this.iUnitOfWork.ProductRepository.Get(), y => y.productID, x => x.ID, (y, x) => new ProductDTO()
+                {
+                    ID = x.ID,
+                    description = x.description,
+                    categoryID = x.categoryID,
+                    parentCategoryName = x.Category.name,
+                    name = x.name,
+                    priceAfter = x.priceAfter,
+                    priceBefore = x.priceBefore,
+                    discountPercentage = String.Format("{0:0.00}", (100 - ((x.priceAfter * 100) / x.priceBefore))) + " %",
+                    rate = (x.rate == null) ? 0 : (int?)x.rate,
+                    images = x.Images.Select(i => new ImageDTO()
+                    {
+                        ID = i.ID,
+                        imageUrl = WebConfigurationManager.AppSettings["WebApiUrl"].ToString() + i.imageUrl,
+                        productID = x.ID
+
+                    }).ToList(),
+                }).ToList();
+
+
+                return favourites;
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogDebug(ex.Message);
+                return null;
+            }
+        }
+
         private List<ProductDTO> GetProductsOFCategory(string CategoryID)
         {
             List<string> Categories = new List<string>();
@@ -499,8 +567,8 @@ namespace ElGamal.BL.Classes
                 {
                     foreach (var item in Categories)
                     {
-                        var temp = (this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == item) != null) ? this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == item).ToList():new List<Product>();
-                        if(temp.Count > 0)
+                        var temp = (this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == item) != null) ? this.iUnitOfWork.ProductRepository.Get(x => x.categoryID.ToString() == item).ToList() : new List<Product>();
+                        if (temp.Count > 0)
                         {
                             products.AddRange(mapObjectProducts(temp));
                         }
@@ -514,6 +582,7 @@ namespace ElGamal.BL.Classes
             }
             return products;
         }
+
         private List<ProductDTO> mapObjectProducts(List<Product> items)
         {
             try

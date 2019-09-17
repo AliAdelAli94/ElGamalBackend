@@ -17,8 +17,7 @@ namespace ElGamal.BL.Interfaces
 
         int DeleteUser(Guid userID);
 
-
-
+        int EditUser(UserDTO data);
 
 
 

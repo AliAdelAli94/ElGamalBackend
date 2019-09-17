@@ -118,5 +118,35 @@ namespace ElGamal.BL.Classes
             }
         }
 
+        public int EditUser(UserDTO data)
+        {
+            try
+            {
+                User item = new User();
+                if(data != null)
+                {
+                    item = this.iUnitOfWork.UserRepository.Get(x => x.email == data.email && x.ID != data.ID).FirstOrDefault();
+                    if (item != null)
+                        return 2;
+                    item = this.iUnitOfWork.UserRepository.GetByID(data.ID);
+                    if (item != null)
+                    {
+                        item.userName = data.userName;
+                        item.phoneNumber = data.phoneNumber;
+                        item.email = data.email;
+                        item.address = data.address;
+                    }
+                }
+                this.iUnitOfWork.UserRepository.Update(item);
+                this.iUnitOfWork.Save();
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogDebug(ex.Message);
+                return -1;
+            }
+        }
+
     }
 }
