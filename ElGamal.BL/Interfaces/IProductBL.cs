@@ -21,7 +21,7 @@ namespace ElGamal.BL.Interfaces
 
         int deleteProduct(DeleteProductDTO data);
 
-        ProductDTO GetProductById(Guid productID);
+        ProductDetailsDTO GetProductById(Guid productID);
 
         FilteredProductsDTO GetFilteredProducts(ProductFilterDTO filter);
 

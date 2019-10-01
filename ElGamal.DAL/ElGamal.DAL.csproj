@@ -64,9 +64,9 @@
     <Compile Include="DTOs\OrderDTO.cs" />
     <Compile Include="DTOs\OrderProductDTO.cs" />
     <Compile Include="DTOs\ParentCategoryDto.cs" />
+    <Compile Include="DTOs\ProductDetailsDTO.cs" />
     <Compile Include="DTOs\ProductDTO.cs" />
     <Compile Include="DTOs\ProductFilterDTO.cs" />
-    <Compile Include="DTOs\ProductOptionDTO.cs" />
     <Compile Include="DTOs\RegisterDTO.cs" />
     <Compile Include="DTOs\UserDTO.cs" />
     <Compile Include="Entities\Category.cs" />
@@ -77,7 +77,6 @@
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderDetail.cs" />
     <Compile Include="Entities\Product.cs" />
-    <Compile Include="Entities\ProductOption.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="GenericRepository\GenericRepository.cs" />
     <Compile Include="GenericRepository\IGenericRepository.cs" />

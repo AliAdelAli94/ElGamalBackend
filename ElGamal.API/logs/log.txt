@@ -151,3 +151,24 @@ CREATE DATABASE failed. Some file names listed could not be created. Check relat
 CREATE DATABASE failed. Some file names listed could not be created. Check related errors.
 2019-08-26 00:27:25,957 - Cannot create file 'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\ElGamal.mdf' because it already exists. Change the file path or the file name, and retry the operation.
 CREATE DATABASE failed. Some file names listed could not be created. Check related errors.
+2019-09-25 00:35:38,215 - ssssss
+2019-09-25 00:58:43,854 - ssssss
+2019-09-25 01:07:06,368 - ssssss
+2019-09-26 00:11:22,914 - ssssss
+2019-09-26 00:13:09,551 - ssssss
+2019-09-26 00:13:43,088 - ssssss
+2019-09-26 00:44:20,233 - ssssss
+2019-09-26 00:44:40,490 - ssssss
+2019-09-26 00:47:00,783 - ssssss
+2019-09-29 23:54:33,854 - ssssss
+2019-09-29 23:54:42,546 - <ul><li>ÇáÓÚÉ ÇáÊÎÒíäíÉ: 8 ÌíÌÇ ÈÇíÊ</li><li>ÊÑÏÏ ÇáÊÔÛíá: ÔÈßÉ ÇáÌíá ÇáÑÇÈÚ</li><li>ÇáÔÑíÍÉ: ËäÇÆí ÇáÔÑíÍÉ</li><li>ÇáÔÇÔÉ: 5 ÈæÕÉ</li></ul>
+2019-09-29 23:54:42,975 - ssssss
+2019-09-29 23:54:57,542 - ssssss
+2019-09-29 23:55:06,299 - <ul><li>ÇáÓÚÉ ÇáÊÎÒíäíÉ: 8 ÌíÌÇ ÈÇíÊ</li><li>ÊÑÏÏ ÇáÊÔÛíá: ÔÈßÉ ÇáÌíá ÇáÑÇÈÚ</li><li>ÇáÔÑíÍÉ: ËäÇÆí ÇáÔÑíÍÉ</li><li>ÇáÔÇÔÉ: 5 ÈæÕÉ</li></ul>
+2019-09-29 23:55:06,466 - ssssss
+2019-09-29 23:55:28,898 - ssssss
+2019-09-30 01:38:57,318 - ssssss
+2019-09-30 01:39:17,108 - <ul><li>ÙÇã ÇáÊÔÛíá: ÃäÏÑæíÏ</li><li>ÇáãÚÇáÌ: ARM Cortex-A53: ÑÈÇÚí ÇáäæÇå 1 ÌíÌÇ åÑÊÒ</li><li>ÑÇã: 1 ÌíÌÇÈÇíÊ</li><li>ÇáÓÚÉ ÇáÊÎÒíäíÉ: 8 ÌíÌÇ ÈÇíÊ</li><li>ÊÑÏÏ ÇáÊÔÛíá: ÔÈßÉ ÇáÌíá ÇáÑÇÈÚ</li><li>ÇáÔÑíÍÉ: ËäÇÆí ÇáÔÑíÍÉ</li><li>ÇáÔÇÔÉ: 5 ÈæÕÉ</li><li>ÔÇÔÉ ÇááãÓ: ãÊÇÍ</li><li>ßÇãíÑÇ ÎáİíÉ: 8 ãíÌÇÈÇíÊ</li><li>ßÇãíÑÇ ÃãÇãíÉ: 5 ãíÌÇÈßÓá</li><li>ÇáÈØÇÑíÉ: 2200 ãíááí ÃãÈíÑ/ÓÇÚÉ</li><li>ÈáæÊæË ãÊÇÍ</li><li>ÑÇÏíæ Åİ Åã ãÊÇÍ</li><li>ÈØÇŞÉ ÇáãÏ: ãÊÇÍ</li><li>:GPS/AGPS ãÊÇÍ</li><li>æÇí İÇí: ãÊÇÍ</li><li>İáÇÔ LED: ãÊÇÍ</li></ul>
+2019-09-30 01:39:17,725 - ssssss
+2019-09-30 01:39:29,780 - <ul><li>ÙÇã ÇáÊÔÛíá: ÃäÏÑæíÏ</li><li>ÇáãÚÇáÌ: ARM Cortex-A53: ÑÈÇÚí ÇáäæÇå 1 ÌíÌÇ åÑÊÒ</li><li>ÑÇã: 1 ÌíÌÇÈÇíÊ</li><li>ÇáÓÚÉ ÇáÊÎÒíäíÉ: 8 ÌíÌÇ ÈÇíÊ</li><li>ÊÑÏÏ ÇáÊÔÛíá: ÔÈßÉ ÇáÌíá ÇáÑÇÈÚ</li><li>ÇáÔÑíÍÉ: ËäÇÆí ÇáÔÑíÍÉ</li><li>ÇáÔÇÔÉ: 5 ÈæÕÉ</li><li>ÔÇÔÉ ÇááãÓ: ãÊÇÍ</li><li>ßÇãíÑÇ ÎáİíÉ: 8 ãíÌÇÈÇíÊ</li><li>ßÇãíÑÇ ÃãÇãíÉ: 5 ãíÌÇÈßÓá</li><li>ÇáÈØÇÑíÉ: 2200 ãíááí ÃãÈíÑ/ÓÇÚÉ</li><li>ÈáæÊæË ãÊÇÍ</li><li>ÑÇÏíæ Åİ Åã ãÊÇÍ</li><li>ÈØÇŞÉ ÇáãÏ: ãÊÇÍ</li><li>:GPS/AGPS ãÊÇÍ</li><li>æÇí İÇí: ãÊÇÍ</li><li>İáÇÔ LED: ãÊÇÍ</li></ul>
+2019-09-30 01:39:30,075 - ssssss

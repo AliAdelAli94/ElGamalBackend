@@ -18,8 +18,6 @@ namespace ElGamal.DAL.UOF
 
         GenericRepository<Order> OrderRepository { get; }
 
-        GenericRepository<ProductOption> ProductOptionRepository { get; }
-
         GenericRepository<Product> ProductRepository { get; }
 
         GenericRepository<User> UserRepository { get; }

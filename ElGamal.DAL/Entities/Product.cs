@@ -15,7 +15,6 @@ namespace ElGamal.DAL.Entities
             Favourites = new HashSet<Favourite>();
             Images = new HashSet<Image>();
             OrderDetails = new HashSet<OrderDetail>();
-            ProductOptions = new HashSet<ProductOption>();
         }
 
         public Guid ID { get; set; }
@@ -33,6 +32,9 @@ namespace ElGamal.DAL.Entities
 
         public Guid? categoryID { get; set; }
 
+        [Column(TypeName = "ntext")]
+        public string productOptions { get; set; }
+
         public virtual Category Category { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -47,7 +49,5 @@ namespace ElGamal.DAL.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProductOption> ProductOptions { get; set; }
     }
 }

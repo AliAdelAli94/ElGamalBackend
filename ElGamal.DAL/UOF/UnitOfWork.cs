@@ -14,7 +14,6 @@ namespace ElGamal.DAL.UOF
         private GenericRepository<Image> imageRepository;
         private GenericRepository<OrderDetail> orderDetailRepository;
         private GenericRepository<Order> orderRepository;
-        private GenericRepository<ProductOption> productOptionRepository;
         private GenericRepository<Product> productRepository;
         private GenericRepository<User> userRepository;
 
@@ -98,18 +97,6 @@ namespace ElGamal.DAL.UOF
             }
         }
 
-        public GenericRepository<ProductOption> ProductOptionRepository
-        {
-            get
-            {
-                if (this.productOptionRepository == null)
-                {
-                    this.productOptionRepository = new GenericRepository<ProductOption>(this.context);
-                }
-
-                return this.productOptionRepository;
-            }
-        }
 
         public GenericRepository<Product> ProductRepository
         {

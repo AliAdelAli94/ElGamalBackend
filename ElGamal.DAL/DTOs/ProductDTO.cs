@@ -28,7 +28,7 @@ namespace ElGamal.DAL.DTOs
 
         public List<ImageDTO> images { get; set; }
 
-        public List<ProductOptionDTO> ProductOptions { get; set; }
+        public string productOptions { get; set; }
 
         public List<CommentDTO> Comments { get; set; }
 

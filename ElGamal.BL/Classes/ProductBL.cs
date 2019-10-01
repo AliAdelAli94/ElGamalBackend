@@ -50,7 +50,7 @@ namespace ElGamal.BL.Classes
                     rate = 0,
                     priceAfter = item.priceAfter,
                     Images = item.images.Select(x => new Image() { imageUrl = x.imageUrl, ID = Guid.NewGuid() }).ToList(),
-                    ProductOptions = item.ProductOptions.Select(x => new ProductOption() { optionText = x.optionText, ID = Guid.NewGuid() }).ToList()
+                    productOptions = item.productOptions
                 };
 
                 this.iUnitOfWork.ProductRepository.Insert(currentProduct);
@@ -78,13 +78,7 @@ namespace ElGamal.BL.Classes
                     name = x.name,
                     priceAfter = x.priceAfter,
                     priceBefore = x.priceBefore,
-                    ProductOptions = x.ProductOptions.Select(p => new ProductOptionDTO()
-                    {
-                        ID = p.ID,
-                        optionText = p.optionText,
-                        productID = x.ID
-
-                    }).ToList(),
+                    productOptions = x.productOptions,
                     rate = (x.rate == null) ? 0 : (int?)x.rate,
                     images = x.Images.Select(i => new ImageDTO()
                     {
@@ -118,6 +112,7 @@ namespace ElGamal.BL.Classes
         {
             try
             {
+                ErrorLogger.LogDebug(item.productOptions);
                 Product oldItem = this.iUnitOfWork.ProductRepository.GetByID(item.ID);
 
                 // start edit images
@@ -142,34 +137,6 @@ namespace ElGamal.BL.Classes
 
                 // end edit images
 
-                // product options edit
-
-                var tempProductOption = new List<ProductOptionDTO>();
-                foreach (var val in oldItem.ProductOptions.ToList())
-                {
-                    iUnitOfWork.ProductOptionRepository.DetachEntity(val);
-                    tempProductOption = item.ProductOptions.Where(x => x.ID == val.ID).ToList();
-                    if (tempProductOption.Count() == 0)
-                    {
-                        this.iUnitOfWork.ProductOptionRepository.Delete(val.ID);
-                    }
-                    else
-                    {
-                        this.iUnitOfWork.ProductOptionRepository.Update(new ProductOption() { ID = tempProductOption.FirstOrDefault().ID, optionText = tempProductOption.FirstOrDefault().optionText, productID = val.productID });
-                    }
-                }
-
-                foreach (var val in item.ProductOptions)
-                {
-                    if (oldItem.ProductOptions.Where(x => x.ID == val.ID).Count() == 0)
-                    {
-                        this.iUnitOfWork.ProductOptionRepository.Insert(new ProductOption() { ID = Guid.NewGuid(), optionText = val.optionText, productID = oldItem.ID });
-                    }
-                }
-                item.ProductOptions.Clear();
-
-                // end product options edit
-
                 foreach (var val in oldItem.Comments.ToList())
                 {
 
@@ -188,6 +155,7 @@ namespace ElGamal.BL.Classes
                 oldItem.name = item.name;
                 oldItem.priceAfter = item.priceAfter;
                 oldItem.priceBefore = item.priceBefore;
+                oldItem.productOptions = item.productOptions;
 
                 this.iUnitOfWork.ProductRepository.Update(oldItem);
                 this.iUnitOfWork.Save();
@@ -270,14 +238,15 @@ namespace ElGamal.BL.Classes
             }
         }
 
-        public ProductDTO GetProductById(Guid productID)
+        public ProductDetailsDTO GetProductById(Guid productID)
         {
+            ProductDetailsDTO item = new ProductDetailsDTO();
             try
             {
                 Product currentProduct = this.iUnitOfWork.ProductRepository.GetByID(productID);
                 if (currentProduct != null)
                 {
-                    return new ProductDTO()
+                    item.CurrentProduct = new ProductDTO()
                     {
                         ID = currentProduct.ID,
                         description = currentProduct.description,
@@ -287,13 +256,7 @@ namespace ElGamal.BL.Classes
                         priceAfter = currentProduct.priceAfter,
                         priceBefore = currentProduct.priceBefore,
                         discountPercentage = (currentProduct.priceAfter != null && currentProduct.priceBefore != null) ? String.Format("{0:0.00}", (100 - ((currentProduct.priceAfter * 100) / currentProduct.priceBefore))) + " %" : 0 + " %",
-                        ProductOptions = currentProduct.ProductOptions.Select(p => new ProductOptionDTO()
-                        {
-                            ID = p.ID,
-                            optionText = p.optionText,
-                            productID = currentProduct.ID
-
-                        }).ToList(),
+                        productOptions = currentProduct.productOptions,
                         rate = (int)currentProduct.rate,
                         images = currentProduct.Images.Select(i => new ImageDTO()
                         {
@@ -313,18 +276,22 @@ namespace ElGamal.BL.Classes
                             productID = currentProduct.ID
                         }).ToList()
                     };
-                }
-                else
-                {
-                    return null;
-                }
+
+                    List<ProductDTO> relatedProducts = new List<ProductDTO>();
+                    relatedProducts = this.GetProductsOFCategory(currentProduct.Category.parentCategoryID.ToString());
+                    if(relatedProducts.Count > 0)
+                    {
+                        item.RelatedProducts = relatedProducts;
+                    }
+
+                }           
             }
             catch (Exception ex)
             {
                 ErrorLogger.LogDebug(ex.Message);
-                return null;
             }
 
+            return item;
         }
 
         public int AddComment(CommentDTO item)
@@ -600,13 +567,7 @@ namespace ElGamal.BL.Classes
                             name = x.name,
                             priceAfter = x.priceAfter,
                             priceBefore = x.priceBefore,
-                            ProductOptions = x.ProductOptions.Select(p => new ProductOptionDTO()
-                            {
-                                ID = p.ID,
-                                optionText = p.optionText,
-                                productID = x.ID
-
-                            }).ToList(),
+                            productOptions = x.productOptions,
                             rate = (int?)x.rate,
                             images = x.Images.Select(i => new ImageDTO()
                             {
