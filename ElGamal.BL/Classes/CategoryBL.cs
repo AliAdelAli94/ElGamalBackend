@@ -77,9 +77,10 @@ namespace ElGamal.BL.Classes
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogDebug("GetParentCategories");
+                ErrorLogger.LogDebug(ex.InnerException.Message);
                 ErrorLogger.LogDebug(ex.Message);
                 return null;
-                throw;
             }
         }
 

@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElGamal.API", "ElGamal.API\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElGamal.CommonUtilitiess", "ElGamal.CommonUtilitiess\ElGamal.CommonUtilitiess.csproj", "{B1F16CBE-6D99-4A8F-A306-6F770444B87C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElGamal.Controls", "ElGamal.Controls\ElGamal.Controls.csproj", "{740B46C7-1C88-4CC8-9C23-F2A40BB74C08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElGamal.Dashboard", "ElGamal.Dashboard\ElGamal.Dashboard.csproj", "{82D0E03B-B43E-40B6-BDF9-1743A3CB0CF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{B1F16CBE-6D99-4A8F-A306-6F770444B87C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1F16CBE-6D99-4A8F-A306-6F770444B87C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1F16CBE-6D99-4A8F-A306-6F770444B87C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{740B46C7-1C88-4CC8-9C23-F2A40BB74C08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{740B46C7-1C88-4CC8-9C23-F2A40BB74C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{740B46C7-1C88-4CC8-9C23-F2A40BB74C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{740B46C7-1C88-4CC8-9C23-F2A40BB74C08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82D0E03B-B43E-40B6-BDF9-1743A3CB0CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82D0E03B-B43E-40B6-BDF9-1743A3CB0CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82D0E03B-B43E-40B6-BDF9-1743A3CB0CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82D0E03B-B43E-40B6-BDF9-1743A3CB0CF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
